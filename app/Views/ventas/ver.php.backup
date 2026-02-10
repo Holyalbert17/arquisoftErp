@@ -1,0 +1,692 @@
+<?= $this->extend('layouts/adminlte') ?>
+
+<?= $this->section('styles') ?>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        --danger-gradient: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+        --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --dark-gradient: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        --card-shadow-hover: 0 15px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+    }
+
+    /* Animated Page Load */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: -1000px 0;
+        }
+
+        100% {
+            background-position: 1000px 0;
+        }
+    }
+
+    .row>div {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .row>div:nth-child(2) {
+        animation: slideInRight 0.6s ease-out;
+    }
+
+    /* Modern Card Styling */
+    .card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        overflow: hidden;
+    }
+
+    .card:hover {
+        box-shadow: var(--card-shadow-hover);
+        transform: translateY(-5px);
+    }
+
+    .card-header {
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        padding: 1.5rem;
+        border-radius: 20px 20px 0 0 !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        animation: shimmer 3s infinite;
+    }
+
+    .card-header h3 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.5rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-header .card-tools .btn {
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+    }
+
+    .card-header .card-tools .btn:hover {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-header .card-tools .btn i {
+        transition: transform 0.3s ease;
+    }
+
+    .card-header .card-tools .btn:hover i {
+        transform: scale(1.2);
+    }
+
+    /* Info Section Styling */
+    .card-body {
+        padding: 2rem;
+    }
+
+    .card-body strong {
+        color: #667eea;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Badge Styling */
+    .badge {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .badge:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .badge-success {
+        background: var(--success-gradient);
+        border: none;
+    }
+
+    .badge-danger {
+        background: var(--danger-gradient);
+        border: none;
+    }
+
+    .badge-warning {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        border: none;
+        color: white;
+    }
+
+    /* Table Styling */
+    .table {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .table thead {
+        background: var(--primary-gradient);
+        color: white;
+    }
+
+    .table thead th {
+        border: none;
+        padding: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.85rem;
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .table tbody tr:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        transform: scale(1.01);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        border: none;
+    }
+
+    .table tfoot {
+        background: rgba(102, 126, 234, 0.05);
+        font-weight: 600;
+    }
+
+    .table tfoot td {
+        padding: 1rem;
+        border: none;
+    }
+
+    /* Currency Styling */
+    .currency {
+        font-family: 'Inter', monospace;
+        font-weight: 600;
+        color: #11998e;
+        font-size: 1.1rem;
+        white-space: nowrap;
+    }
+
+    .table tfoot .currency {
+        font-size: 1.3rem;
+        color: #667eea;
+    }
+
+    .table tfoot h4 .currency {
+        font-size: 1.8rem;
+        background: var(--success-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* Action Buttons */
+    .btn-block {
+        border-radius: 12px;
+        padding: 1rem;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-block::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-block:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .btn-block:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary {
+        background: var(--dark-gradient);
+    }
+
+    .btn-primary {
+        background: var(--primary-gradient);
+    }
+
+    .btn-danger {
+        background: var(--danger-gradient);
+    }
+
+    .btn-block i {
+        transition: transform 0.3s ease;
+        margin-right: 0.5rem;
+    }
+
+    .btn-block:hover i {
+        transform: scale(1.2) rotate(5deg);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .card-header h3 {
+            font-size: 1.2rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .table {
+            font-size: 0.9rem;
+        }
+
+        .currency {
+            font-size: 1rem;
+        }
+
+        .table tfoot h4 .currency {
+            font-size: 1.4rem;
+        }
+    }
+
+    /* Section Headers */
+    h5 {
+        color: #667eea;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    h5::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: var(--primary-gradient);
+        border-radius: 3px;
+    }
+
+    /* Info Row Styling */
+    .mb-3 .col-md-6 {
+        padding: 1rem;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .mb-3 .col-md-6:hover {
+        background: rgba(102, 126, 234, 0.05);
+    }
+</style>
+<?= $this->endSection() ?>
+
+<?= $this->section('breadcrumb') ?>
+<li class="breadcrumb-item"><a href="<?= base_url('ventas') ?>">Ventas</a></li>
+<li class="breadcrumb-item active">Ver Venta</li>
+<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-shopping-cart mr-1"></i>
+                    Venta: <?= esc($venta['numero_venta']) ?>
+                </h3>
+                <div class="card-tools">
+                    <a href="<?= base_url('ventas/imprimir/' . $venta['id']) ?>" class="btn btn-sm btn-secondary"
+                        target="_blank">
+                        <i class="fas fa-print"></i> Ticket
+                    </a>
+                    <a href="<?= base_url('ventas/imprimirFactura/' . $venta['id']) ?>" class="btn btn-sm btn-primary"
+                        target="_blank">
+                        <i class="fas fa-file-invoice"></i> Factura
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Información de la Venta -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Fecha:</strong> <?= date('d/m/Y H:i', strtotime($venta['fecha_venta'])) ?><br>
+                        <strong>Tipo:</strong> <?= esc($venta['tipo_comprobante']) ?><br>
+                        <strong>Estado:</strong>
+                        <span
+                            class="badge badge-<?= $venta['estado'] == 'COMPLETADA' ? 'success' : ($venta['estado'] == 'ANULADA' ? 'danger' : 'warning') ?>">
+                            <?= esc($venta['estado']) ?>
+                        </span><br>
+                        <?php if ($venta['usuario']): ?>
+                            <strong>Realizado por:</strong>
+                            <?= esc(($venta['usuario']['nombre'] ?? '') . ' ' . ($venta['usuario']['apellido'] ?? '')) ?><br>
+                        <?php endif; ?>
+                        <?php if ($venta['vendedor']): ?>
+                            <strong>Vendedor:</strong>
+                            <?= esc(($venta['vendedor']['nombre'] ?? '') . ' ' . ($venta['vendedor']['apellido'] ?? '')) ?><br>
+                        <?php endif; ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?php if ($venta['numero_factura']): ?>
+                            <strong>Factura N°:</strong> <?= esc($venta['numero_factura']) ?><br>
+                        <?php endif; ?>
+                        <?php if ($venta['timbrado']): ?>
+                            <strong>Timbrado:</strong> <?= esc($venta['timbrado']) ?><br>
+                        <?php endif; ?>
+                        <?php if ($venta['cliente']): ?>
+                            <strong>Cliente:</strong>
+                            <?= esc($venta['cliente']['nombre'] ?? $venta['cliente']['razon_social']) ?><br>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <!-- Detalles -->
+                <h5 class="mb-3">Detalle de Productos</h5>
+                <?php
+                // formatGs() está disponible como helper global
+                ?>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unit.</th>
+                            <th>Descuento</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        // Función para formatear cantidad (sin decimales si es entero)
+                        $formatCantidad = function ($cantidad) {
+                            $cantidad = (float) $cantidad;
+                            // Si es un número entero, mostrar sin decimales
+                            if ($cantidad == floor($cantidad)) {
+                                return number_format($cantidad, 0, ',', '.');
+                            }
+                            // Si tiene decimales, mostrar con 2 decimales
+                            return number_format($cantidad, 2, ',', '.');
+                        };
+                        foreach ($venta['detalles'] as $detalle): ?>
+                            <tr>
+                                <td><?= esc($detalle['descripcion'] ?? 'Producto') ?></td>
+                                <td><?= $formatCantidad($detalle['cantidad'] ?? 0) ?></td>
+                                <td class="currency"><?= formatGs($detalle['precio_unitario'] ?? 0) ?></td>
+                                <td class="currency"><?= formatGs($detalle['descuento_total_monto'] ?? 0) ?></td>
+                                <td class="currency"><strong><?= formatGs($detalle['total'] ?? 0) ?></strong></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-right"><strong>Subtotal:</strong></td>
+                            <td class="currency"><strong><?= formatGs($venta['subtotal'] ?? 0) ?></strong></td>
+                        </tr>
+                        <?php if (($venta['descuento_monto'] ?? 0) > 0): ?>
+                            <tr>
+                                <td colspan="4" class="text-right"><strong>Descuento:</strong></td>
+                                <td class="currency"><strong><?= formatGs($venta['descuento_monto']) ?></strong></td>
+                            </tr>
+                        <?php endif; ?>
+                        <?php if (($venta['iva_10'] ?? 0) > 0): ?>
+                            <tr>
+                                <td colspan="4" class="text-right"><strong>IVA 10%:</strong></td>
+                                <td class="currency"><strong><?= formatGs($venta['iva_10']) ?></strong></td>
+                            </tr>
+                        <?php endif; ?>
+                        <?php if (($venta['iva_5'] ?? 0) > 0): ?>
+                            <tr>
+                                <td colspan="4" class="text-right"><strong>IVA 5%:</strong></td>
+                                <td class="currency"><strong><?= formatGs($venta['iva_5']) ?></strong></td>
+                            </tr>
+                        <?php endif; ?>
+                        <tr>
+                            <td colspan="4" class="text-right">
+                                <h4><strong>TOTAL:</strong></h4>
+                            </td>
+                            <td class="currency">
+                                <h4><strong><?= formatGs(($venta['subtotal'] ?? 0) + ($venta['total_iva'] ?? 0)) ?></strong>
+                                </h4>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <!-- Pagos -->
+                <?php if (!empty($venta['pagos'])): ?>
+                    <h5 class="mb-3 mt-4">Formas de Pago</h5>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Forma de Pago</th>
+                                <th>Monto</th>
+                                <th>Referencia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($venta['pagos'] as $pago): ?>
+                                <tr>
+                                    <td><?= esc(str_replace('_', ' ', $pago['forma_pago'])) ?></td>
+                                    <td class="currency"><?= formatGs($pago['monto'] ?? 0) ?></td>
+                                    <td><?= esc($pago['referencia'] ?? '-') ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><strong>Total Pagado:</strong></td>
+                                <td class="currency"><strong><?= formatGs($venta['monto_pagado'] ?? 0) ?></strong></td>
+                                <td></td>
+                            </tr>
+                            <?php if (($venta['vuelto'] ?? 0) > 0): ?>
+                                <tr>
+                                    <td><strong>Vuelto:</strong></td>
+                                    <td class="currency"><strong><?= formatGs($venta['vuelto']) ?></strong></td>
+                                    <td></td>
+                                </tr>
+                            <?php endif; ?>
+                        </tfoot>
+                    </table>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Acciones</h3>
+            </div>
+            <div class="card-body">
+                <a href="<?= base_url('ventas/imprimir/' . $venta['id']) ?>" class="btn btn-block btn-secondary mb-2"
+                    target="_blank">
+                    <i class="fas fa-print"></i> Imprimir Ticket
+                </a>
+                <a href="<?= base_url('ventas/imprimirFactura/' . $venta['id']) ?>"
+                    class="btn btn-block btn-primary mb-2" target="_blank">
+                    <i class="fas fa-file-invoice"></i> Imprimir Factura
+                </a>
+                <?php
+                // Verificar si se puede anular
+                $puedeAnular = false;
+                $esAdmin = false;
+
+                if ($venta['estado'] != 'ANULADA' && isset($user) && isset($user['rol_id'])) {
+                    // Verificar si es administrador
+                    $rolModel = new \App\Models\RolModel();
+                    $rol = $rolModel->find($user['rol_id']);
+                    if ($rol && $rol['nivel'] <= 2) {
+                        $esAdmin = true;
+                    }
+
+                    if ($esAdmin) {
+                        // Administrador puede anular sin límite de tiempo
+                        $puedeAnular = true;
+                    } else {
+                        // Cajero solo puede anular dentro de 24 horas
+                        $fechaVenta = strtotime($venta['fecha_venta']);
+                        $fechaActual = time();
+                        $diferenciaDias = ($fechaActual - $fechaVenta) / (60 * 60 * 24);
+                        $puedeAnular = $diferenciaDias <= 1;
+                    }
+                }
+                ?>
+                <?php if ($puedeAnular): ?>
+                    <button class="btn btn-block btn-danger btn-anular" data-venta-id="<?= $venta['id'] ?>"
+                        data-fecha-venta="<?= $venta['fecha_venta'] ?>" data-es-admin="<?= $esAdmin ? '1' : '0' ?>">
+                        <i class="fas fa-ban"></i> Anular y Eliminar Venta
+                    </button>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?= $this->endSection() ?>
+
+<?= $this->section('scripts') ?>
+<script>
+    $(document).ready(function () {
+        $('.btn-anular').on('click', function () {
+            const ventaId = $(this).data('venta-id');
+            const fechaVenta = $(this).data('fecha-venta');
+            const esAdmin = $(this).data('es-admin') == '1';
+
+            // Validar tiempo para cajeros
+            if (!esAdmin) {
+                const fechaVentaObj = new Date(fechaVenta);
+                const fechaActual = new Date();
+                const diferenciaMs = fechaActual - fechaVentaObj;
+                const diferenciaDias = diferenciaMs / (1000 * 60 * 60 * 24);
+
+                if (diferenciaDias > 1) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No se puede anular',
+                        text: 'Los cajeros solo pueden anular ventas dentro de las primeras 24 horas. Contacte a un administrador.',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    return;
+                }
+            }
+
+            Swal.fire({
+                title: '¿Anular y eliminar venta?',
+                html: '<p>Esta acción <strong>eliminará permanentemente</strong> la venta y todos sus datos asociados.</p>' +
+                    '<p>Se revertirá el stock de los productos.</p>',
+                input: 'text',
+                inputLabel: 'Motivo de anulación',
+                inputPlaceholder: 'Ingrese el motivo...',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, anular y eliminar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#d33',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'Debe ingresar un motivo';
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Obtener token CSRF del meta tag o input hidden
+                    const csrfToken = $('meta[name="<?= csrf_header() ?>"]').attr('content') ||
+                        $('input[name="<?= csrf_token() ?>"]').val() ||
+                        '<?= csrf_hash() ?>';
+
+                    $.ajax({
+                        url: '<?= base_url("ventas/anular") ?>/' + ventaId,
+                        method: 'POST',
+                        headers: {
+                            '<?= csrf_header() ?>': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        data: {
+                            motivo: result.value,
+                            '<?= csrf_token() ?>': csrfToken
+                        },
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Éxito',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    window.location.href = '<?= base_url("ventas") ?>';
+                                });
+                            } else {
+                                Swal.fire('Error', response.message, 'error');
+                            }
+                        },
+                        error: function (xhr) {
+                            let mensaje = 'Error al anular la venta';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                mensaje = xhr.responseJSON.message;
+                            } else if (xhr.status === 403) {
+                                mensaje = 'No tiene permisos para realizar esta acción';
+                            } else if (xhr.status === 401) {
+                                mensaje = 'Sesión expirada. Por favor, recargue la página.';
+                            }
+                            Swal.fire('Error', mensaje, 'error');
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+<?= $this->endSection() ?>

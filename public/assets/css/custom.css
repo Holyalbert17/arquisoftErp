@@ -1,0 +1,696 @@
+/* AdminLTE v3 Custom Styles - Bootstrap 5 Compatible */
+
+/* Fix para compatibilidad con clases antiguas de Bootstrap 4 */
+.mr-1 {
+    margin-right: 0.25rem !important;
+}
+
+.mr-2 {
+    margin-right: 0.5rem !important;
+}
+
+.mr-3 {
+    margin-right: 1rem !important;
+}
+
+.ml-1 {
+    margin-left: 0.25rem !important;
+}
+
+.ml-2 {
+    margin-left: 0.5rem !important;
+}
+
+.ml-3 {
+    margin-left: 1rem !important;
+}
+
+.pl-1 {
+    padding-left: 0.25rem !important;
+}
+
+.pl-2 {
+    padding-left: 0.5rem !important;
+}
+
+.pr-1 {
+    padding-right: 0.25rem !important;
+}
+
+.pr-2 {
+    padding-right: 0.5rem !important;
+}
+
+/* Badges antiguos de Bootstrap 4 */
+.badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.badge-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.badge-info {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.badge-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.badge-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.badge-light {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+.badge-dark {
+    background-color: #343a40;
+    color: #fff;
+}
+
+/* ===== FIX GLOBAL: modales siempre encima del fondo oscuro (evita que el backdrop bloquee clics) =====
+   Bootstrap/AdminLTE pueden cargar después; usamos !important para que aplique en toda la app. */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.45) !important;
+    z-index: 1040 !important;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.15s linear;
+}
+
+.modal-backdrop.show {
+    opacity: 1 !important;
+    z-index: 1040 !important;
+}
+
+body.modal-open {
+    overflow: hidden;
+    padding-right: 0 !important;
+}
+
+/* Crítico: el wrapper (sidebar + contenido) debe quedar por encima del backdrop para que
+   cualquier modal dentro del layout sea clickeable. Sin esto el fondo oscuro tapa los modales. */
+body.modal-open .wrapper {
+    z-index: 1050 !important;
+    position: relative !important;
+}
+
+body.modal-open .modal {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.modal {
+    z-index: 1055 !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: none;
+    outline: 0;
+}
+
+.modal.show {
+    display: block !important;
+}
+
+.modal.show .modal-dialog {
+    transform: none;
+}
+
+.modal.fade {
+    opacity: 0;
+    transition: opacity 0.15s linear;
+}
+
+.modal.fade.show {
+    opacity: 1;
+}
+
+/* body.modal-open ya está definido arriba */
+
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 1.75rem auto;
+    pointer-events: none;
+    z-index: 1056 !important;
+    max-width: 500px;
+    transform: translate(0, -50px);
+    transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: translate(0, 0);
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+    outline: 0;
+    z-index: 1057 !important;
+}
+
+.modal-xl {
+    max-width: 95%;
+}
+
+.modal-xl .modal-dialog {
+    max-width: 95%;
+    margin: 2.5vh auto;
+}
+
+.modal-dialog-centered::before {
+    content: "";
+    display: block;
+    height: calc(100vh - 3.5rem);
+    min-height: 100%;
+}
+
+/* Content wrapper */
+.content-wrapper,
+.content,
+.container-fluid {
+    position: relative;
+    z-index: 1;
+}
+
+body.modal-open .content-wrapper,
+body.modal-open .content,
+body.modal-open .container-fluid {
+    z-index: 1;
+}
+
+body.modal-open .main-sidebar {
+    z-index: 1;
+}
+
+body.modal-open .main-header {
+    z-index: 1;
+}
+
+/* Form control large */
+.form-control-lg {
+    border-radius: 0.3rem;
+    border: 1px solid #ced4da;
+}
+
+.form-control-lg:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Select2 in modal */
+.modal-body .select2-container {
+    width: 100% !important;
+}
+
+.modal-body .select2-container--default .select2-selection--single {
+    height: 38px;
+    border: 1px solid #ced4da;
+    border-radius: 0.3rem;
+}
+
+.modal-body .select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 36px;
+    padding-left: 0.75rem;
+}
+
+.modal-body .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px;
+    right: 0.75rem;
+}
+
+/* Dark Mode Toggle Icon */
+#darkModeIcon {
+    transition: all 0.3s;
+}
+
+#darkModeIcon.fa-moon {
+    color: #495057;
+}
+
+#darkModeIcon.fa-sun {
+    color: #ffc107;
+}
+
+body.dark-mode #darkModeIcon.fa-moon {
+    color: #b8c7ce;
+}
+
+body.dark-mode #darkModeIcon.fa-sun {
+    color: #ffc107;
+}
+
+#toggleDarkMode:hover #darkModeIcon {
+    transform: rotate(15deg) scale(1.1);
+}
+
+/* AdminLTE v3 Dark Mode - Los estilos nativos de AdminLTE v3 ya manejan el dark mode
+   Solo agregamos ajustes específicos si es necesario */
+
+/* Asegurar que el modo oscuro funcione correctamente con Bootstrap 5 */
+[data-bs-theme="dark"] {
+    color-scheme: dark;
+}
+
+[data-bs-theme="light"] {
+    color-scheme: light;
+}
+
+/* Ajustes adicionales para componentes específicos en modo oscuro */
+body.dark-mode .card {
+    background-color: var(--bs-dark);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--bs-body-color);
+}
+
+body.dark-mode .form-control {
+    background-color: var(--bs-dark);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--bs-body-color);
+}
+
+body.dark-mode .form-control:focus {
+    background-color: var(--bs-dark);
+    border-color: var(--bs-primary);
+    color: var(--bs-body-color);
+}
+
+body.dark-mode .dropdown-menu {
+    background-color: var(--bs-dark);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .modal-content {
+    background-color: var(--bs-dark, #1a2226);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--bs-body-color, #b8c7ce);
+}
+
+body.dark-mode .modal-header {
+    background-color: var(--bs-primary, #3c8dbc) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .modal-header .modal-title {
+    color: #ffffff !important;
+}
+
+body.dark-mode .modal-body {
+    background-color: var(--bs-dark, #1a2226);
+    color: var(--bs-body-color, #b8c7ce);
+}
+
+body.dark-mode .modal-footer {
+    background-color: var(--bs-dark, #1a2226);
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* DataTables en modo oscuro */
+body.dark-mode .dataTables_wrapper .dataTables_filter input {
+    background-color: var(--bs-dark);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--bs-body-color);
+}
+
+body.dark-mode .dataTables_wrapper .dataTables_length select {
+    background-color: var(--bs-dark);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--bs-body-color);
+}
+
+/* Select2 en modo oscuro */
+body.dark-mode .select2-container--default .select2-selection--single {
+    background-color: var(--bs-dark);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: var(--bs-body-color);
+}
+
+body.dark-mode .select2-dropdown {
+    background-color: var(--bs-dark);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .select2-container--default .select2-results__option {
+    color: var(--bs-body-color);
+}
+
+body.dark-mode .select2-container--default .select2-results__option--highlighted {
+    background-color: var(--bs-primary);
+    color: #fff;
+}
+
+/* Scrollbar personalizado para modo oscuro */
+body.dark-mode ::-webkit-scrollbar-track {
+    background: var(--bs-dark);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: var(--bs-primary);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: var(--bs-primary);
+    opacity: 0.8;
+}
+
+/* AdminLTE v3 - Ajustes adicionales */
+.main-sidebar {
+    transition: transform 0.3s ease-in-out;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    text-decoration: none;
+}
+
+.brand-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-right: 1.2rem;
+}
+
+.brand-text-container {
+    flex: 1;
+    overflow: hidden;
+}
+
+.brand-text {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.brand-icon-placeholder,
+.user-icon-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.5rem;
+}
+
+.user-panel .info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.user-panel .user-name {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.user-panel .user-location {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.875rem;
+}
+
+/* Sidebar user image */
+.user-image-custom {
+    width: 3.2rem !important;
+    height: 3.2rem !important;
+    object-fit: cover !important;
+    border-radius: 0.25rem !important;
+}
+
+/* Navbar improvements */
+.main-header .navbar-nav .nav-link {
+    transition: all 0.2s;
+}
+
+.main-header .navbar-nav .nav-link:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .main-header .navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Content improvements */
+.content-header {
+    padding: 1rem 1.5rem;
+}
+
+.content-header h1 {
+    font-size: 1.75rem;
+    font-weight: 400;
+    margin: 0;
+}
+
+/* Card improvements */
+.card {
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.125), 0 1px 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    padding: 0.75rem 1.25rem;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+body.dark-mode .card-header {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.card-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+/* Table improvements */
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+/* Button improvements */
+.btn {
+    font-weight: 400;
+    border-radius: 0.25rem;
+    transition: all 0.15s ease-in-out;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Form improvements */
+.form-control {
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+body.dark-mode .form-control:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Info box improvements */
+.info-box {
+    display: flex;
+    min-height: 80px;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.125), 0 1px 3px rgba(0, 0, 0, 0.2);
+    border-radius: 0.25rem;
+    background-color: #fff;
+    margin-bottom: 1rem;
+}
+
+body.dark-mode .info-box {
+    background-color: var(--bs-dark);
+}
+
+.info-box-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    font-size: 2rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.info-box-content {
+    flex: 1;
+    padding: 0.625rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info-box-text {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.info-box-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Responsive improvements */
+@media (max-width: 767.98px) {
+    .content-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .brand-text {
+        font-size: 1rem;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+}
+
+/* ===== Modal dinámico global (siempre encima, sin conflicto con Bootstrap) ===== */
+.app-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+.app-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    cursor: pointer;
+}
+.app-modal-container {
+    position: relative;
+    z-index: 1;
+    max-width: 95%;
+    max-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+.app-modal-box {
+    pointer-events: auto;
+    background: var(--bs-body-bg, #fff);
+    border-radius: 0.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    min-width: 320px;
+    max-width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--bs-border-color-translucent, rgba(0, 0, 0, 0.175));
+}
+.app-modal-overlay.app-modal-size-sm .app-modal-box { max-width: 400px; }
+.app-modal-overlay.app-modal-size-md .app-modal-box { max-width: 560px; }
+.app-modal-overlay.app-modal-size-lg .app-modal-box { max-width: 800px; }
+.app-modal-overlay.app-modal-size-xl .app-modal-box { max-width: 95%; width: 95%; }
+.app-modal-overlay.app-modal-size-full .app-modal-box { max-width: 98%; width: 98%; max-height: 95vh; }
+.app-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--bs-border-color-translucent, rgba(0, 0, 0, 0.175));
+    background: var(--bs-tertiary-bg, #f8f9fa);
+    flex-shrink: 0;
+}
+.app-modal-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+.app-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.75rem;
+    line-height: 1;
+    opacity: 0.7;
+    cursor: pointer;
+    padding: 0 0.25rem;
+}
+.app-modal-close:hover {
+    opacity: 1;
+}
+.app-modal-body {
+    padding: 1.25rem;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}

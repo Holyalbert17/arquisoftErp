@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: arquisoft-system
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: CI_ENVIRONMENT
+        value: production
+      - key: APP_BASEURL
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: arquisoft-db
+          property: connectionURI
+      - key: DB_HOSTNAME
+        fromDatabase:
+          name: arquisoft-db
+          property: host
+      - key: DB_DATABASE
+        fromDatabase:
+          name: arquisoft-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: arquisoft-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: arquisoft-db
+          property: password
+      - key: DB_PORT
+        fromDatabase:
+          name: arquisoft-db
+          property: port
+      - key: PORT
+        value: 10000
+
+databases:
+  - name: arquisoft-db
+    plan: free
+    databaseName: arquisoft_system
+    user: arquisoft_user
