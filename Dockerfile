@@ -1,6 +1,8 @@
 FROM php:8.2-apache
 
-# Instalar extensiones PHP necesarias
+# ==============================
+# 1. Dependencias del sistema
+# ==============================
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     libicu-dev \
@@ -11,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     unzip \
     git \
+    curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
         pgsql \
@@ -20,53 +23,75 @@ RUN apt-get update && apt-get install -y \
         zip \
         gd \
         opcache \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Habilitar mod_rewrite de Apache
-RUN a2enmod rewrite
+# ==============================
+# 2. Apache config
+# ==============================
+RUN a2enmod rewrite headers
 
-# Configurar Apache para apuntar a /var/www/html/public
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+# Root público (CodeIgniter / Laravel)
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
-# Permitir .htaccess (AllowOverride All)
-RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
+    /etc/apache2/sites-available/*.conf \
+    /etc/apache2/apache2.conf \
+    /etc/apache2/conf-available/*.conf
 
-# Configurar PHP para producción
+# Permitir .htaccess
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' \
+    /etc/apache2/apache2.conf
+
+# ==============================
+# 3. PHP producción
+# ==============================
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-# Copiar composer desde imagen oficial
+# ==============================
+# 4. Composer
+# ==============================
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copiar proyecto
-COPY . /var/www/html/
-
+# ==============================
+# 5. Copiar proyecto
+# ==============================
 WORKDIR /var/www/html
+COPY . .
 
-# Instalar dependencias de composer
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# ==============================
+# 6. Dependencias PHP
+# ==============================
+RUN if [ -f composer.json ]; then \
+    composer install --no-dev --optimize-autoloader --no-interaction; \
+    fi
 
-# Crear directorios necesarios con permisos
+# ==============================
+# 7. Permisos (CodeIgniter)
+# ==============================
 RUN mkdir -p writable/cache writable/logs writable/session writable/uploads \
-    && chown -R www-data:www-data writable/ \
-    && chmod -R 775 writable/
+    && chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 writable
 
-# Crear .htaccess en public/ si no existe
+# ==============================
+# 8. .htaccess automático
+# ==============================
 RUN if [ ! -f public/.htaccess ]; then \
     echo '<IfModule mod_rewrite.c>\n\
-    RewriteEngine On\n\
-    RewriteCond %{REQUEST_FILENAME} !-f\n\
-    RewriteCond %{REQUEST_FILENAME} !-d\n\
-    RewriteRule ^(.*)$ index.php/$1 [L]\n\
+RewriteEngine On\n\
+RewriteBase /\n\
+RewriteCond %{REQUEST_FILENAME} !-f\n\
+RewriteCond %{REQUEST_FILENAME} !-d\n\
+RewriteRule ^(.*)$ index.php/$1 [L]\n\
 </IfModule>' > public/.htaccess; \
     fi
 
-# Puerto por defecto (Render usa $PORT en runtime)
+# ==============================
+# 9. Puerto dinámico (Render)
+# ==============================
 ENV PORT=10000
 EXPOSE 10000
 
-# Script de inicio que configura el puerto dinámicamente
 RUN echo '#!/bin/bash\n\
 sed -i "s/Listen 80/Listen ${PORT}/g" /etc/apache2/ports.conf\n\
 sed -i "s/:80/:${PORT}/g" /etc/apache2/sites-available/000-default.conf\n\

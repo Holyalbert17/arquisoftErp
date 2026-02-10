@@ -16,7 +16,7 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'http://localhost/arquisoft_system/public/';
+    public string $baseURL = 'https://arquisoft-system.onrender.com/';
 
     public function __construct()
     {
