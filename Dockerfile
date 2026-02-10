@@ -71,6 +71,8 @@ RUN if [ -f composer.json ]; then \
 # ==============================
 RUN mkdir -p writable/cache writable/logs writable/session writable/uploads \
     && chown -R www-data:www-data /var/www/html \
+    && find /var/www/html/public -type d -exec chmod 755 {} \; \
+    && find /var/www/html/public -type f -exec chmod 644 {} \; \
     && chmod -R 775 writable
 
 # ==============================
