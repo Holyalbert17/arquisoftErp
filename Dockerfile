@@ -28,8 +28,8 @@ RUN apt-get update && apt-get install -y \
 
 # ==============================
 # 2. Apache config
-# ==============================
-RUN a2enmod rewrite headers
+# Habilitar módulos Apache necesarios
+RUN a2enmod rewrite headers expires
 
 # Root público (CodeIgniter / Laravel)
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
@@ -94,10 +94,21 @@ EXPOSE 10000
 
 RUN echo '#!/bin/bash\n\
 sed -i "s/Listen 80/Listen ${PORT}/g" /etc/apache2/ports.conf\n\
-sed -i "s/:80/:${PORT}/g" /etc/apache2/sites-available/000-default.conf\n\
-sed -i "s|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g" /etc/apache2/sites-available/000-default.conf\n\
-sed -i "s|<Directory /var/www/html>|<Directory /var/www/html/public>|g" /etc/apache2/sites-available/000-default.conf\n\
-sed -i "s|AllowOverride None|AllowOverride All|g" /etc/apache2/sites-available/000-default.conf\n\
+cat > /etc/apache2/sites-available/000-default.conf << EOF\n\
+<VirtualHost *:${PORT}>\n\
+    ServerAdmin webmaster@localhost\n\
+    DocumentRoot /var/www/html/public\n\
+    \n\
+    <Directory /var/www/html/public>\n\
+        Options -Indexes +FollowSymLinks\n\
+        AllowOverride All\n\
+        Require all granted\n\
+    </Directory>\n\
+    \n\
+    ErrorLog \${APACHE_LOG_DIR}/error.log\n\
+    CustomLog \${APACHE_LOG_DIR}/access.log combined\n\
+</VirtualHost>\n\
+EOF\n\
 exec apache2-foreground' > /usr/local/bin/start.sh \
     && chmod +x /usr/local/bin/start.sh
 
