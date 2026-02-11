@@ -21,17 +21,6 @@ class App extends BaseConfig
     public function __construct()
     {
         parent::__construct();
-
-        // Override baseURL from environment variable (for Render/production)
-        $appBaseUrl = getenv('APP_BASEURL') ?: ($_ENV['APP_BASEURL'] ?? null);
-        if ($appBaseUrl) {
-            $this->baseURL = rtrim($appBaseUrl, '/') . '/';
-        }
-
-        // En producción con Apache, no necesitamos index.php en la URL
-        if (defined('ENVIRONMENT') && ENVIRONMENT === 'production') {
-            $this->indexPage = '';
-        }
     }
 
     /**

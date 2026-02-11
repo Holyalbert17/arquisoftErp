@@ -51,32 +51,7 @@ class Database extends Config
         ],
     ];
 
-    /**
-     * Override DB config from environment variables (for Render/production)
-     */
-    private function loadEnvDatabase(): void
-    {
-        $envHost = getenv('DB_HOSTNAME') ?: ($_ENV['DB_HOSTNAME'] ?? null);
-        if ($envHost) {
-            $this->default['hostname'] = $envHost;
-            $this->default['username'] = getenv('DB_USERNAME') ?: ($_ENV['DB_USERNAME'] ?? 'postgres');
-            $this->default['password'] = getenv('DB_PASSWORD') ?: ($_ENV['DB_PASSWORD'] ?? '');
-            $this->default['database'] = getenv('DB_DATABASE') ?: ($_ENV['DB_DATABASE'] ?? 'arquisoft_system');
-            $this->default['port']     = (int)(getenv('DB_PORT') ?: ($_ENV['DB_PORT'] ?? 5432));
-        }
-
-        // Render PostgreSQL requiere SSL
-        $dbUrl = getenv('DATABASE_URL') ?: ($_ENV['DATABASE_URL'] ?? null);
-        if ($dbUrl && str_contains($dbUrl, 'render.com')) {
-            $this->default['encrypt'] = ['sslmode' => 'require'];
-        }
-
-        // En producción, no mostrar errores SQL detallados
-        if (defined('ENVIRONMENT') && ENVIRONMENT === 'production') {
-            $this->default['DBDebug'] = false;
-        }
-    }
-
+    
     //    /**
     //     * Sample database connection for SQLite3.
     //     *
@@ -219,9 +194,6 @@ class Database extends Config
     public function __construct()
     {
         parent::__construct();
-
-        // Override DB config from environment variables (Render/production)
-        $this->loadEnvDatabase();
 
         // Ensure that we always set the database group to 'tests' if
         // we are currently running an automated test suite, so that
