@@ -104,23 +104,17 @@ cat > /etc/apache2/sites-available/000-default.conf << EOF\n\
     DocumentRoot /var/www/html/public\n\
     \n\
     <Directory /var/www/html/public>\n\
-        Options +Indexes +FollowSymLinks\n\
+        Options Indexes FollowSymLinks\n\
         AllowOverride All\n\
         Require all granted\n\
     </Directory>\n\
     \n\
-    <Directory /var/www/html/public/writable>\n\
-        Require all denied\n\
-    </Directory>\n\
-    \n\
     ErrorLog \${APACHE_LOG_DIR}/error.log\n\
     CustomLog \${APACHE_LOG_DIR}/access.log combined\n\
-    LogLevel debug\n\
 </VirtualHost>\n\
 EOF\n\
-# Enable Apache status for debugging\n\
-echo "ExtendedStatus On" >> /etc/apache2/mods-available/status.conf\n\
-a2enmod status\n\
+echo "Starting Apache on port ${PORT}"\n\
+netstat -tlnp | grep :${PORT}\n\
 exec apache2-foreground' > /usr/local/bin/start.sh \
     && chmod +x /usr/local/bin/start.sh
 
